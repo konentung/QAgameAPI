@@ -14,8 +14,7 @@ auth = AuthManager(db)
 
 @app.route("/")
 def index():
-    return "✅ Flask App is Running"
-    # return redirect(url_for("login_page"))
+    return redirect(url_for("login_page"))
 
 @app.route("/login_page")
 def login_page():

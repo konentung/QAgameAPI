@@ -1,10 +1,15 @@
 from pymongo import MongoClient
 from config import Config
+from pymongo.errors import ConnectionFailure
 
 class MongoDB:
     def __init__(self):
-        self.client = MongoClient(Config.MONGO_URI)
-        self.db = self.client[Config.DB_NAME]
+        try:
+            self.client = MongoClient(Config.MONGO_URI)
+            self.db = self.client[Config.DB_NAME]
+            print("✅ MongoDB connection successful")
+        except ConnectionFailure as e:
+            print(f"❌ MongoDB connection failed: {e}")
 
     def get_user_collection(self):
         return self.db[Config.USER_COLLECTION]

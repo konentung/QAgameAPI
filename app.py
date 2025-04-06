@@ -84,4 +84,4 @@ def add_question():
     })
     return jsonify({"success": True, "message": "新增成功"}), 200
 
-handler = app
+vercel_app = app

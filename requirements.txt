@@ -1,0 +1,4 @@
+flask==3.0.0
+pymongo[srv]==3.11
+python-dotenv==1.1.0
+flask-cors=5.0.1

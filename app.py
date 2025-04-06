@@ -38,13 +38,22 @@ def logout():
     session.pop("user", None)
     return jsonify({"success": True, "message": "Logged out"}), 200
 
+# @app.route("/questions", methods=["GET"])
+# def get_questions():
+#     if "user" not in session:
+#         return jsonify({"success": False, "message": "Unauthorized"}), 401
+
+#     question_collection = db.get_question_collection()
+#     questions = list(question_collection.find({}, {"_id": 0}))
+#     return jsonify({"success": True, "questions": questions}), 200
+
 @app.route("/questions", methods=["GET"])
 def get_questions():
-    if "user" not in session:
-        return jsonify({"success": False, "message": "Unauthorized"}), 401
-
+    # 從 MongoDB 中獲取題目資料
     question_collection = db.get_question_collection()
+    # 查詢並排除 `_id` 字段
     questions = list(question_collection.find({}, {"_id": 0}))
+    # 返回 JSON 格式的題目資料
     return jsonify({"success": True, "questions": questions}), 200
 
 @app.route("/admin")

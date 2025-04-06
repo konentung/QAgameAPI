@@ -12,13 +12,10 @@ app.secret_key = "supersecretkey"
 db = MongoDB()
 auth = AuthManager(db)
 
-@app.route("/test")
-def test():
-    return "✅ Flask App is Running"
-
 @app.route("/")
 def index():
-    return redirect(url_for("login_page"))
+    return "✅ Flask App is Running"
+    # return redirect(url_for("login_page"))
 
 @app.route("/login_page")
 def login_page():

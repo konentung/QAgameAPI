@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from mongodb import MongoDB
 from map import AuthManager
-from flask import render_template
+from flask import render_template, redirect, url_for
 
 app = Flask(__name__)
 # CORS(app)
@@ -11,19 +11,6 @@ app.secret_key = "supersecretkey"
 
 db = MongoDB()
 auth = AuthManager(db)
-
-def register_user(self, username, password, is_admin=False):
-    if self.users.find_one({"username": username}):
-        return False, "Username already exists"
-    hashed = self.hash_password(password)
-    self.users.insert_one({
-        "username": username,
-        "password": hashed,
-        "is_admin": is_admin
-    })
-    return True, "User registered successfully"
-
-from flask import render_template, redirect, url_for
 
 @app.route("/")
 def index():
@@ -95,3 +82,6 @@ def add_question():
 
 if __name__ == "__main__":
     app.run()
+
+
+handler = app

@@ -81,4 +81,5 @@ def add_question():
     })
     return jsonify({"success": True, "message": "新增成功"}), 200
 
-vercel_app = app
+if __name__ == "__main__":
+    app.run()

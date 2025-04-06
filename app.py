@@ -80,8 +80,4 @@ def add_question():
     })
     return jsonify({"success": True, "message": "新增成功"}), 200
 
-if __name__ == "__main__":
-    app.run()
-
-
 handler = app

@@ -36,22 +36,61 @@
 
     <h4>題目列表</h4>
     <ul class="list-group" id="questionList"></ul>
+
+    <script>
+        async function fetchQuestions() {
+            const res = await fetch("/questions");
+            const data = await res.json();
+            const list = document.getElementById("questionList");
+            list.innerHTML = "";
+            data.questions.forEach(q => {
+                const li = document.createElement("li");
+                li.className = "list-group-item";
+                li.innerHTML = `
+                    <strong>${q.statement}</strong><br>
+                    選項：${q.options.join(", ")}<br>
+                    答案：${q.answer}<br>
+                    <button class="btn btn-warning btn-sm" onclick="editQuestion('${q._id}')">修改</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q._id}')">刪除</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        async function editQuestion(questionId) {
+            const newStatement = prompt("請輸入新的題目敘述");
+            const newAnswer = prompt("請輸入新的正確答案");
+
+            const res = await fetch(`/edit_question/${questionId}`, {
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    statement: newStatement,
+                    options: [],  // 假設選項的修改方式是另行處理
+                    answer: newAnswer
+                })
+            });
+
+            const data = await res.json();
+            alert(data.message);
+            fetchQuestions();
+        }
+
+        async function deleteQuestion(questionId) {
+            const res = await fetch(`/delete_question/${questionId}`, {
+                method: "DELETE"
+            });
+
+            const data = await res.json();
+            alert(data.message);
+            fetchQuestions();
+        }
+
+        fetchQuestions();
+    </script>
   </div>
 
   <script>
-    async function fetchQuestions() {
-      const res = await fetch("/questions");
-      const data = await res.json();
-      const list = document.getElementById("questionList");
-      list.innerHTML = "";
-      data.questions.forEach(q => {
-        const li = document.createElement("li");
-        li.className = "list-group-item";
-        li.innerHTML = `<strong>${q.statement}</strong><br>選項：${q.options.join(", ")}<br>答案：${q.answer}`;
-        list.appendChild(li);
-      });
-    }
-
     async function logout() {
       const res = await fetch("/logout", { method: "POST" });
       const data = await res.json();

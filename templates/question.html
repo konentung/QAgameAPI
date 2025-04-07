@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>問題列表</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">問題列表</h2>
+      <button class="btn btn-outline-danger" onclick="logout()">登出</button>
+    </div>
+
+    <hr />
+    <h4>題目列表</h4>
+    <ul class="list-group" id="questionList"></ul>
+  </div>
+
+  <script>
+    // 確保使用者登入後顯示題目
+    async function fetchQuestions() {
+      const res = await fetch("/questions");
+      const data = await res.json();
+      const list = document.getElementById("questionList");
+      list.innerHTML = "";
+      data.questions.forEach(q => {
+        const li = document.createElement("li");
+        li.className = "list-group-item";
+        li.innerHTML = `<strong>${q.statement}</strong><br>選項：${q.options.join(", ")}<br>答案：${q.answer}`;
+        list.appendChild(li);
+      });
+    }
+
+    // 登出功能
+    async function logout() {
+      const res = await fetch("/logout", { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        alert("已登出！");
+        window.location.href = "/login_page";  // 登出後返回登入頁面
+      }
+    }
+
+    // 頁面加載後調用此函數顯示問題列表
+    fetchQuestions();
+  </script>
+</body>
+</html>

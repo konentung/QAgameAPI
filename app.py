@@ -22,7 +22,7 @@ def index():
             return redirect(url_for("admin_panel"))
         else:
             # 如果是非管理員，跳轉到問題頁面
-            return redirect(url_for("question_page"))
+            return redirect(url_for("questions_page"))
     # 如果未登入，跳轉到登入頁面
     return redirect(url_for("login_page"))
 
